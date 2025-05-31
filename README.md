@@ -47,23 +47,24 @@ These values are written directly to the frequency register:
 Wire.begin(21, 22); // SDA, SCL pins for ESP32
 ```
 
-## Register 0x02 Power and Control Register Setup
-🧩 Register 0x02 – Power and Control Register
-Bit(s)	Name	Description <br>
-15	DHIZ	Audio output High-Z disable (0 = High-Z, 1 = normal)  <br>
-14	DMUTE	Mute disable (0 = mute, 1 = unmute)  <br>
-13	MONO	Force mono (0 = stereo, 1 = mono)  <br>
-12	BASS	Bass boost enable  <br>
-11	NON_CALIBRATE	0 = RCLK always supplied, 1 = not always  <br>
-10	RCLK_DIRECT_IN	Use external clock directly  <br>
-9	SEEKUP	1 = Seek up, 0 = Seek down  <br>
-8	SEEK	Start seek (1 to initiate)  <br>
-7	SKMODE	Seek stop method  <br>
-6	CLK_MODE	Clock mode select  <br>
-5	RDS_EN	Enable RDS  <br>
-4	NEW_METHOD	Enable better sensitivity  <br>
-1	SOFT_RESET	Software reset  <br>
-0	ENABLE	Power up the chip  <br>
+## 🧩 Register 0x02 – Power and Control Register
+| Bit(s) | Name             | Description                                          |
+| ------ | ---------------- | ---------------------------------------------------- |
+| 15     | `DHIZ`           | Audio output High-Z disable (0 = High-Z, 1 = normal) |
+| 14     | `DMUTE`          | Mute disable (0 = mute, 1 = unmute)                  |
+| 13     | `MONO`           | Force mono (0 = stereo, 1 = mono)                    |
+| 12     | `BASS`           | Bass boost enable                                    |
+| 11     | `NON_CALIBRATE`  | 0 = RCLK always supplied, 1 = not always             |
+| 10     | `RCLK_DIRECT_IN` | Use external clock directly                          |
+| 9      | `SEEKUP`         | 1 = Seek up, 0 = Seek down                           |
+| 8      | `SEEK`           | Start seek (1 to initiate)                           |
+| 7      | `SKMODE`         | Seek stop method                                     |
+| 6      | `CLK_MODE`       | Clock mode select                                    |
+| 5      | `RDS_EN`         | Enable RDS                                           |
+| 4      | `NEW_METHOD`     | Enable better sensitivity                            |
+| 1      | `SOFT_RESET`     | Software reset                                       |
+| 0      | `ENABLE`         | Power up the chip                                    |
+
 
 ➡ Enables chip, resets, unmutes, enables bass boost, etc.
 

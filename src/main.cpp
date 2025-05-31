@@ -20,7 +20,7 @@ void setup() {
   Serial.begin(115200);
   writeRegister(0x02,0b1111000000001001); //  1111000000001001 0xF009
   delay(100);
-  writeRegister(0x05,0b1000100010001111); //  1000100010001111 0x888F
+  writeRegister(0x05,0b1000100010001100); //  1000100010001111 0x888F
   delay(100);  // Wait for tuning 
   writeRegister(0x03,0b0000100010010000);  // 000000100010010000 = 0x890 // 90.4Mhz
   delay(100);
