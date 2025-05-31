@@ -2,7 +2,6 @@
 #include <Wire.h>
 
 #define RDAW 0x11  // 0b0010000
-#define RDAR 0x10  //Not used -> As it increment by one every time we accesse the register.
 #define SUP 25    // Channel Up
 
 
