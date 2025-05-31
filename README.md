@@ -59,9 +59,9 @@ Wire.begin(21, 22); // SDA, SCL pins for ESP32
 | 9      | `SEEKUP`         | 1 = Seek up, 0 = Seek down                           |
 | 8      | `SEEK`           | Start seek (1 to initiate)                           |
 | 7      | `SKMODE`         | Seek stop method                                     |
-| 6      | `CLK_MODE`       | Clock mode select                                    |
-| 5      | `RDS_EN`         | Enable RDS                                           |
-| 4      | `NEW_METHOD`     | Enable better sensitivity                            |
+| 6:4    | `CLK_MODE`       | Clock mode select                                    |
+| 3      | `RDS_EN`         | Enable RDS                                           |
+| 2      | `NEW_METHOD`     | Enable better sensitivity                            |
 | 1      | `SOFT_RESET`     | Software reset                                       |
 | 0      | `ENABLE`         | Power up the chip                                    |
 
@@ -111,17 +111,16 @@ Hexadecimal: 0x890 \\\ 90.4Mhz <br>
 | ------ | -------------- | ------------------------------------ |
 | 15     | `RSVD`         | Reserved                             |
 | 14     | `STCIEN`       | Seek/Tune Complete Interrupt enable  |
-| 13     | `RBDS`         | RBDS mode enable (US version of RDS) |
-| 12     | `RDS_FIFO_EN`  | Enable RDS FIFO mode                 |
+| 13:12  | `RSVD`         | Reserved                             |
 | 11     | `DE`           | De-emphasis (0 = 75µs, 1 = 50µs)     |
 | 10     | `RDS_FIFO_CLR` | Clear RDS FIFO                       |
 | 9      | `SOFTMUTE_EN`  | Enable soft mute                     |
 | 8      | `AFCD`         | AFC disable                          |
 | 7      | `RSVD1`        | Reserved                             |
-| 6-5    | `GPIO3`        | GPIO3 function control               |
-| 4-3    | `GPIO2`        | GPIO2 function control               |
-| 2-1    | `GPIO1`        | GPIO1 function control               |
-| 0      | `I2S_ENABLE`   | Enable I2S output                    | <br>
+| 6      | `I2S_ENABLE`   | Enable I2S output                    | <br>
+| 5-4    | `GPIO3`        | GPIO3 function control               |
+| 3-2    | `GPIO2`        | GPIO2 function control               |
+| 1-0    | `GPIO1`        | GPIO1 function control               |
 
 | Bit | 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
 |-----|----|----|----|----|----|----|---|---|---|---|---|---|---|---|---|---|
@@ -136,11 +135,10 @@ Hexadecimal: 0x240
 | Bit(s) | Name            | Description           |
 | ------ | --------------- | --------------------- |
 | 15     | `INT_MODE`      | Interrupt mode        |
-| 14-13  | `SEEK_MODE`     | Seek sensitivity mode |
-| 12     | `RSVD2`         | Reserved              |
+| 14-12  | `RSVD`          | Reserved              |
 | 11:8   | `SEEKTH`        | Seek threshold        |
-| 7:6    | `LNA_PORT_SEL`  | LNA input port select |
-| 5:4    | `LNA_ICSEL_BIT` | LNA current selection |
+| 7:6    | `LNA_ICSEL_BIT` | LNA current selection |
+| 5:4    | `RSVD`          | Reserved              |
 | 3:0    | `VOLUME`        | Volume level (0–15)   |
 
 | Bit | 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
@@ -156,21 +154,41 @@ Hexadecimal: 0x888F
 | ------ | -------------- | ------------------------------------------ |
 | 15     | `RSVD`         | Reserved                                   |
 | 14-13  | `OPEN_MODE`    | Enables register read/write (11 = open)    |
-| 12     | `SLAVE_MASTER` | I2S mode: 0 = master, 1 = slave            |
-| 11     | `WS_LR`        | Word select: left/right                    |
+| 12     | `I2S_MODE`     | I2S mode: 0 = master, 1 = slave            |
+| 11     | `SW_LR`        | Word select: left/right                    |
 | 10     | `SCLK_I_EDGE`  | I2S clock edge (internal)                  |
 | 9      | `DATA_SIGNED`  | I2S data format (0 = unsigned, 1 = signed) |
 | 8      | `WS_I_EDGE`    | Word select edge                           |
-| 7-2    | `I2S_SW_CNT`   | I2S sample width or delay                  |
+| 7-4    | `I2S_SW_CNT`   | I2S sample width or delay                  |
+| 3      | `SW_O_EDGE`    | If 1, invert ws output when master         |
+| 2      | `SCLK_O_EDGE`  | If 1, invert sclk output when master       |
 | 1      | `L_DELY`       | L-channel delay                            |
 | 0      | `R_DELY`       | R-channel delay                            |
 
 | Bit | 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
 |-----|----|----|----|----|----|----|---|---|---|---|---|---|---|---|---|---|
-| Val | 0  | 0  | 0  | 0  | 1  | 0  | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Val | 0  | 0  | 0  | 0  | 1  | 0  | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
-Binary: 0000100001100000 <br>
-Hexadecimal: 0x860 <br>
+#### Important Note: For MAX98357A __DATA_SIGNED__ bit should be 1, which means signed 16-bit audio data. 
+
+Binary: 0b0000101010000000 <br>
+Hexadecimal: 0xA80 <br>
+
+## Connection with esp32:
+ESP32S-GPIO21(SDA) - RDA5807FP PIN 8 <br>
+ESP32S-GPIO22(SCL) - RDA5807FP PIN 7 <br>
+
+MAX98357(Module)-LRC  -  RDA5807FP-GPIO1 <br>
+MAX98357(Module)-DIN  -  RDA5807FP-GPIO2 <br>
+MAX98357(Module)-BCLK -  RDA5807FP-GPIO3 <br>
+
+MAX98357-VCC -ESP32-VIN or 5V
+MAX98357-VCC -ESP32-GND
+
+RDA5807FP-VCC/VDD-PIN-10 - ESP32-3.3V
+RDA5807FP-GND-PIN-2,3,5,6,11,14 - ESP32-GND
+
+For Antenne Use 75cm single core wire.
 
 ### ⚠️ I2C Line pullup resistor is needed. It is must. I used 10K.
 ```c++
@@ -198,21 +216,6 @@ Library link: https://github.com/pu2clr/RDA5807 <br>
 Code with this lib:
 
 ```c++
-/*
-   Test and validation of RDA5807 on ESP32 board.
-    
-   ATTENTION:  
-   Please, avoid using the computer connected to the mains during testing. Used just the battery of your computer. 
-   This sketch was tested on ATmega328 based board. If you are not using a ATmega328, please check the pins of your board. 
-
-  | RDA5807    | Function              |ESP LOLIN32 WEMOS (GPIO) |
-  |-----------| ----------------------|-------------------------|
-  | SDA/SDIO  |   SDIO                |   21 (SDA / GPIO21)     |
-  | CLK/CLOCK |   SCLK                |   22 (SCL / GPIO22)     |
-
-
-   By Ricardo Lima Caratti, 2020.
-*/
 
 #include <RDA5807.h>
 
